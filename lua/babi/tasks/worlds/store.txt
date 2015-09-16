@@ -1,0 +1,46 @@
+# purchasable objects
+
+create apple
+set apple is_thing
+set apple is_gettable
+
+create banana
+set banana is_thing
+set banana is_gettable
+
+create orange
+set orange is_thing
+set orange is_gettable
+
+create pineapple
+set pineapple is_thing
+set pineapple is_gettable
+
+create pear
+set pear is_thing
+set pear is_gettable
+
+create melon
+set melon is_thing
+set melon is_gettable
+
+# actors
+create John
+set John is_actor
+set John is_god
+set John is_male
+
+create Mary
+set Mary is_actor
+set Mary is_god
+set Mary is_female
+
+create Sandra
+set Sandra is_actor
+set Sandra is_god
+set Sandra is_female
+
+create Daniel
+set Daniel is_actor
+set Daniel is_god
+set Daniel is_male

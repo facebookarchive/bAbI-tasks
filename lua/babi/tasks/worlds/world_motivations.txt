@@ -1,0 +1,81 @@
+# locations
+
+create bedroom
+set bedroom is_thing
+set bedroom is_location
+
+create kitchen
+set kitchen is_thing
+set kitchen is_location
+
+create garden
+set garden is_thing
+set garden is_location
+
+# small (moveable) objects
+
+create apple
+set apple is_thing
+set apple is_gettable
+set apple is_in kitchen
+
+create football
+set football is_thing
+set football is_gettable
+set football is_in garden
+
+create milk
+set milk is_thing
+set milk is_gettable
+set milk is_in kitchen
+
+create pajamas
+set pajamas is_thing
+set pajamas is_gettable
+set pajamas is_in bedroom
+
+# actors
+create Jason
+set Jason is_actor
+set Jason is_god
+set Jason is_male
+
+create Antoine
+set Antoine is_actor
+set Antoine is_god
+set Antoine is_female
+
+create Sumit
+set Sumit is_actor
+set Sumit is_god
+set Sumit is_female
+
+create Yann
+set Yann is_actor
+set Yann is_god
+set Yann is_male
+
+# motivations
+create hungry
+set hungry is_motivation
+set hungry destination kitchen
+set hungry object apple
+set hungry is_adjective
+
+create thirsty
+set thirsty is_motivation
+set thirsty destination kitchen
+set thirsty object milk
+set thirsty is_adjective
+
+create bored
+set bored is_motivation
+set bored destination garden
+set bored object football
+set bored is_adjective
+
+create tired
+set tired is_motivation
+set tired destination bedroom
+set tired object pajamas
+set tired is_adjective

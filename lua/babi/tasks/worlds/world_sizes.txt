@@ -1,0 +1,26 @@
+# containers
+
+create suitcase
+set suitcase is_thing
+set suitcase is_container
+
+create container
+set container is_thing
+set container is_container
+
+create box
+set box is_thing
+set box is_container
+
+create "treasure chest"
+set "treasure chest" is_thing
+set "treasure chest" is_container
+
+create "box of chocolates"
+set "box of chocolates" is_thing
+set "box of chocolates" is_container
+set "box of chocolates" size 1
+
+create chocolate
+set chocolate is_thing
+set chocolate size 0.5
