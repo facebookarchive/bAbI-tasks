@@ -97,8 +97,8 @@ true`` to enable this.::
   2 H teleport F
   3 eval H is_in  F       2
 
-Overview
---------
+Code Overview
+-------------
 
 Tasks are generated through simulation: We have a world containing entities_,
 and actions_ that can add new entities to the world, or modify entities' states.
