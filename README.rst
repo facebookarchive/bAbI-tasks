@@ -1,11 +1,13 @@
 bAbI tasks
 ==========
 
-This repository contains code to generate the `bAbI tasks`__ as described in
-`Towards AI-Complete Question Answering: A Set of Prerequisite Toy Tasks`__
+This repository contains code to generate the `bAbI tasks`__ as described in the paper
+`Towards AI-Complete Question Answering: A Set of Prerequisite Toy Tasks`__.
+Please cite the paper if you use this code in your work (bibtex entry `here`__).
 
 __ http://fb.ai/babi
 __ http://arxiv.org/abs/1502.05698
+__ http://dblp.uni-trier.de/rec/bibtex/journals/corr/WestonBCM15
 
 .. contents:: :depth: 2
 
@@ -22,7 +24,6 @@ root directory.
    luarocks make babitasks-scm-1.rockspec
 
 __ https://github.com/torch/distro
-__ https://github.com/torch/class
 
 Usage
 -----
@@ -74,6 +75,7 @@ follows:
     Note: This code is a rewrite of the original code that was used to
     generate the publically available dataset at `fb.ai/babi`__. As such, it
     is not possible to produce exactly the same dataset.
+    However, we have verified that numbers obtained are very similar.
 
 __ http://fb.ai/babi
 
@@ -87,16 +89,22 @@ required to answer the question can be changed.
 
    babi-tasks PathFinding --path-length 3
    babi-tasks Size --steps 3
+   
+For tasks involving people moving around, the use of coreferences and conjunctions can be controlled with the flags ``--coreference`` and ``--conjunction``. These flags take a number between 0 and 1 as an argument, determining the fraction of the time coreferences and conjunctions are used respectively.
 
-Tasks can also be rendered a in more symbolic manner. Use the flag ``--symbolic
+.. code:: bash
+
+   babi-tasks WhereIsActor --coreference 1.0
+
+Tasks can also be rendered in a more symbolic manner. Use the flag ``--symbolic
 true`` to enable this.::
 
   1 H teleport N
   2 H teleport F
   3 eval H is_in  F       2
 
-Overview
---------
+Code Overview
+-------------
 
 Tasks are generated through simulation: We have a world containing entities_,
 and actions_ that can add new entities to the world, or modify entities' states.
