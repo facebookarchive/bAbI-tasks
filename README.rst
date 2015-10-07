@@ -89,6 +89,12 @@ required to answer the question can be changed.
 
    babi-tasks PathFinding --path-length 3
    babi-tasks Size --steps 3
+   
+For tasks involving people moving around, the use of coreferences and conjunctions can be controlled with the flags ``--coreference`` and ``--conjunction``. These flags take a number between 0 and 1 as an argument, determining the fraction of the time coreferences and conjunctions are used respectively.
+
+.. code:: bash
+
+   babi-tasks WhereIsActor --coreference 1.0
 
 Tasks can also be rendered in a more symbolic manner. Use the flag ``--symbolic
 true`` to enable this.::
