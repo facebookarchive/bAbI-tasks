@@ -74,6 +74,7 @@ follows:
     Note: This code is a rewrite of the original code that was used to
     generate the publically available dataset at `fb.ai/babi`__. As such, it
     is not possible to produce exactly the same dataset.
+    However, we have verified that numbers obtained are very similar.
 
 __ http://fb.ai/babi
 
@@ -88,7 +89,7 @@ required to answer the question can be changed.
    babi-tasks PathFinding --path-length 3
    babi-tasks Size --steps 3
 
-Tasks can also be rendered a in more symbolic manner. Use the flag ``--symbolic
+Tasks can also be rendered in a more symbolic manner. Use the flag ``--symbolic
 true`` to enable this.::
 
   1 H teleport N
