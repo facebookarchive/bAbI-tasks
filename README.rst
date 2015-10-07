@@ -22,7 +22,6 @@ root directory.
    luarocks make babitasks-scm-1.rockspec
 
 __ https://github.com/torch/distro
-__ https://github.com/torch/class
 
 Usage
 -----
