@@ -89,10 +89,11 @@ end
 
 -- Templates match a set of clauses and turn them into text
 
+local template_random = {}
 local Template = class('Template')
 
 function Template:__init(i, j, story, knowledge, config,
-                         mentions, coreferences)
+                         mentions, coreferences, random)
     self.i = i
     self.j = j
     self.story = story
@@ -100,11 +101,13 @@ function Template:__init(i, j, story, knowledge, config,
     self.config = config
     self.mentions = mentions
     self.coreferences = coreferences
+    self.random = random or math.random()
+    template_random[class.type(self)] = self.random
 end
 
 function Template:cast(template)
     return template(self.i, self.j, self.story, self.knowledge, self.config,
-                    self.mentions, self.coreferences)
+                    self.mentions, self.coreferences, template_random[class.type(template)])
 end
 
 function Template:add_mentions()
@@ -263,7 +266,7 @@ end
 function CoreferenceTeleport:is_valid()
     if class.istype(self:clause().action, 'Teleport') and
             self.mentions[self.j - 1] == List{self:clause().actor} and
-            math.random() < self.config['coreference'] and
+            self.random < self.config['coreference'] and
             not self:cast(CompoundCoreferenceTeleport):is_valid() then
         return true
     end
@@ -297,8 +300,8 @@ end
 function CompoundCoreferenceTeleport:is_valid()
     if self.i < #self.story then
         local clauses = self.story:slice(self.i - 2, self.i + 1)
-        if math.random() > self.config['coreference'] or
-           math.random() > self.config['compound'] then
+        if self.random > self.config['coreference'] or
+           self.random > self.config['compound'] then
             return false
         end
         if #clauses == 4 then
@@ -1170,7 +1173,7 @@ function ConjunctionTeleport:is_valid()
         if are_teleports and
             simple1.actor ~= simple2.actor and
             simple1.args[1] == simple2.args[1] and
-            math.random() < self.config['conjunction'] and
+            self.random < self.config['conjunction'] and
             not self:cast(CompoundCoreferenceTeleport):is_valid() then
             return true
         end
