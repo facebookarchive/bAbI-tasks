@@ -3,7 +3,7 @@ bAbI tasks
 
 This repository contains code to generate the `bAbI tasks`__ as described in the paper
 `Towards AI-Complete Question Answering: A Set of Prerequisite Toy Tasks`__.
-Please cite the paper if you use this code in your work (`bibtex entry`__).
+Please cite the paper if you use this code in your work (bibtex entry `here`__).
 
 __ http://fb.ai/babi
 __ http://arxiv.org/abs/1502.05698
