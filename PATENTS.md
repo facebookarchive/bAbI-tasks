@@ -1,4 +1,4 @@
-dditional Grant of Patent Rights Version 2
+Additional Grant of Patent Rights Version 2
 
 "Software" means the bAbI tasks software distributed by Facebook, Inc.
 

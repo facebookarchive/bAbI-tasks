@@ -1,4 +1,4 @@
-D License
+BSD License
 
 For bAbI tasks software
 
