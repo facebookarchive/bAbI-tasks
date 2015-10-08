@@ -10,7 +10,7 @@
 local tablex = require 'pl.tablex'
 local utilities = require 'babi.utilities'
 
-BABI_HOME = utilities.babi_home()
+BABI_HOME = os.getenv('BABI_HOME') or utilities.babi_home()
 
 local function generate(task_name, number, output, user_config)
     local task = require('babi.tasks.' .. task_name)
