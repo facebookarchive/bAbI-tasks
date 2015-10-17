@@ -218,7 +218,7 @@ References
 ----------
 
 * Jason Weston, Antoine Bordes, Sumit Chopra, Tomas Mikolov, Alexander M. 
-  Rush, "`Towards AI-Complete Question Answering: A Set of Prerequisite Toy
+  Rush, Bart van Merriënboer, "`Towards AI-Complete Question Answering: A Set of Prerequisite Toy
   Tasks`__", *arXiv:1502.05698 [cs.AI]*.
 * Sainbayar Sukhbaatar, Arthur Szlam, Jason Weston, Rob Fergus, "`End-To-End
   Memory Networks`__", *arXiv:1503.08895 [cs.NE]*.
