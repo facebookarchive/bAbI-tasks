@@ -87,8 +87,9 @@ function PathFinding:generate_story(world, knowledge, story, config)
     end
 
     -- Decoys
-    local num_decoys = 2
-    while true do
+    local num_decoys = config.decoys
+    local j = 0
+    while j < num_decoys do
         local rel_obj = self.locations[math.random(i - 1)]
         local rel_node = grid.objects[rel_obj]
         local dir = DIRECTIONS[math.random(#DIRECTIONS)]
@@ -101,10 +102,8 @@ function PathFinding:generate_story(world, knowledge, story, config)
                 add_loc(grid, decoy_node, self.locations[i], world)
                 story:append(Clause(world, true, world:god(), actions.set,
                                     rel_obj, dir, self.locations[i]))
-                if i - path_length == num_decoys then
-                    break
-                end
                 i = i + 1
+                j = j + 1
             end
         end
     end
@@ -119,6 +118,6 @@ function PathFinding:generate_story(world, knowledge, story, config)
     return story, knowledge
 end
 
-PathFinding.DEFAULT_CONFIG = {path_length=2}
+PathFinding.DEFAULT_CONFIG = {path_length=2, decoys=2}
 
 return PathFinding
