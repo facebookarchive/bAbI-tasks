@@ -137,6 +137,8 @@ function Size:generate_story(world, knowledge, story, config)
     -- Find the actors and the locations in the world
     local objects = world:get(function(entity) return entity.is_thing and
                                                       not entity.is_god end)
+    assert(config.steps < #objects,
+           'not enough objects for this number of comparisons')
     table.sort(objects, function(x, y) return x.size > y.size end)
 
     -- Keep a track of the ordering the reader is aware of

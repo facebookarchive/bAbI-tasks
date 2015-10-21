@@ -73,7 +73,7 @@ follows:
 == ============================================= ===================
 
     Note: This code is a rewrite of the original code that was used to
-    generate the publically available dataset at `fb.ai/babi`__. As such, it
+    generate the publicly available dataset at `fb.ai/babi`__. As such, it
     is not possible to produce exactly the same dataset.
     However, we have verified that numbers obtained are very similar.
 
@@ -81,16 +81,25 @@ __ http://fb.ai/babi
 
 Task flags
 ~~~~~~~~~~
-Some tasks accept configuration flags that will change their output. For
-example, in both the ``PathFinding`` and ``Size`` the number of inference steps
-required to answer the question can be changed.
+Some tasks accept configuration flags that will change their output.
+
+In both the ``PathFinding`` and ``Size`` the number of inference steps required
+to answer the question can be changed. You can also control the number of
+"decoys" (locations that are not part of the path).
 
 .. code:: bash
 
-   babi-tasks PathFinding --path-length 3
+   babi-tasks PathFinding --path-length 3 --decoys 1
    babi-tasks Size --steps 3
-   
-For tasks involving people moving around, the use of coreferences and conjunctions can be controlled with the flags ``--coreference`` and ``--conjunction``. These flags take a number between 0 and 1 as an argument, determining the fraction of the time coreferences and conjunctions are used respectively.
+
+Currently the path length plus the number of decoys has to be 5 or less.
+Similarly, the number of size comparisons cannot be more than 5.
+
+For tasks involving people moving around, the use of coreferences and
+conjunctions can be controlled with the flags ``--coreference`` and
+``--conjunction``. These flags take a number between 0 and 1 as an argument,
+determining the fraction of the time coreferences and conjunctions are used
+respectively.
 
 .. code:: bash
 
@@ -159,7 +168,7 @@ world. When actions_ are performed, the ``Action.update_knowledge`` method can
 update this knowledge accordingly. For example, when ``Knowledge`` contains
 the information that John is in the kitchen, the action of dropping the milk
 will result in the knowledge being updated to say that the milk is in the
-kitchen, and that it isn't being held by anone.
+kitchen, and that it isn't being held by anyone.
 
 The ``Knowledge`` class takes into account some basic logical rules. For
 example, some properties are "exclusive" in the sense that only one value can be

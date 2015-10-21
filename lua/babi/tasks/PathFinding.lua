@@ -51,6 +51,8 @@ end
 function PathFinding:generate_story(world, knowledge, story, config)
     -- Choose the direction in which the locations wlil be ordered
     local path_length = config.path_length
+    assert(path_length + 1 + config.decoys <= #self.locations,
+           'not enough locations to create path of this length')
     local grid = utilities.Grid(#self.locations * 2 + 1)
     local source_loc = self.locations[1]
     local target_loc
