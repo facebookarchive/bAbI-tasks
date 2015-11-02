@@ -72,15 +72,13 @@ function PositionalReasoning:generate_story(world, knowledge, story)
             i = i + 1
             grid:add_node(next_node, chosen_shapes[i])
             utilities.add_loc(grid, next_node, chosen_shapes[i], world)
-        else
-            next_node = prev_node
-        end
-        if i > 1 then
-            story:append(Clause(world, true, world:god(), actions.set,
-                                chosen_shapes[i - 1], dir, chosen_shapes[i]))
+            if i > 1 then
+                story:append(Clause(world, true, world:god(), actions.set,
+                                    chosen_shapes[i - 1], dir, chosen_shapes[i]))
+            end
+            prev_node = next_node
         end
         dir = DIRECTIONS[math.random(2)][math.random(2)]
-        prev_node = next_node
         next_node = grid:rel_node(prev_node, dir)
     end
 
