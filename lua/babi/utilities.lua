@@ -86,7 +86,7 @@ function Grid:__init(width, height)
 end
 
 function Grid:to_coordinates(i)
-    return (i - 1) % self.width + 1, math.floor((i - 1) / 10) + 1
+    return (i - 1) % self.width + 1, math.floor((i - 1) / self.width) + 1
 end
 
 function Grid:to_node(x, y)
