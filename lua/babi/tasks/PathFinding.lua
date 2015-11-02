@@ -92,18 +92,18 @@ function PathFinding:generate_story(world, knowledge, story, config)
     local num_decoys = config.decoys
     local j = 0
     while j < num_decoys do
-        local rel_obj = self.locations[math.random(i - 1)]
+        local rel_obj = self.locations[math.random(i)]
         local rel_node = grid.objects[rel_obj]
         local dir = DIRECTIONS[math.random(#DIRECTIONS)]
         local decoy_node = grid:rel_node(rel_node, dir)
         if not grid.nodes[decoy_node] then
-            grid:add_node(decoy_node, self.locations[i])
+            grid:add_node(decoy_node, self.locations[i + 1])
             if #grid:yen(source, target, 2) > 1 then
                 grid:remove_node(decoy_node)
             else
-                add_loc(grid, decoy_node, self.locations[i], world)
+                add_loc(grid, decoy_node, self.locations[i + 1], world)
                 story:append(Clause(world, true, world:god(), actions.set,
-                                    rel_obj, dir, self.locations[i]))
+                                    rel_obj, dir, self.locations[i + 1]))
                 i = i + 1
                 j = j + 1
             end
