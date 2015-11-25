@@ -226,9 +226,7 @@ well). This enables turning on things like coreferences, conjunctions, etc.
 References
 ----------
 
-* Jason Weston, Antoine Bordes, Sumit Chopra, Tomas Mikolov, Alexander M. 
-  Rush, Bart van Merriënboer, "`Towards AI-Complete Question Answering: A Set of Prerequisite Toy
-  Tasks`__", *arXiv:1502.05698 [cs.AI]*.
+* Jason Weston, Antoine Bordes, Sumit Chopra, Alexander M. Rush, Bart van Merriënboer, Tomas Mikolov. "`Towards AI-Complete Question Answering: A Set of Prerequisite Toy Tasks`__", *arXiv:1502.05698 [cs.AI]*.
 * Sainbayar Sukhbaatar, Arthur Szlam, Jason Weston, Rob Fergus, "`End-To-End
   Memory Networks`__", *arXiv:1503.08895 [cs.NE]*.
 
