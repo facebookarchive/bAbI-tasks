@@ -3,7 +3,7 @@ bAbI tasks
 
 This repository contains code to generate the `bAbI tasks`__ as described in the paper
 `Towards AI-Complete Question Answering: A Set of Prerequisite Toy Tasks`__.
-Please cite the paper if you use this code in your work (bibtex entry `here`__).
+Please cite the paper if you use this code in your work.
 
 __ http://fb.ai/babi
 __ http://arxiv.org/abs/1502.05698
@@ -226,7 +226,7 @@ well). This enables turning on things like coreferences, conjunctions, etc.
 References
 ----------
 
-* Jason Weston, Antoine Bordes, Sumit Chopra, Alexander M. Rush, Bart van Merriënboer, Tomas Mikolov. "`Towards AI-Complete Question Answering: A Set of Prerequisite Toy Tasks`__", *arXiv:1502.05698 [cs.AI]*.
+* Jason Weston, Antoine Bordes, Sumit Chopra, Alexander M. Rush, Bart van Merriënboer, Armand Joulin, Tomas Mikolov. "`Towards AI-Complete Question Answering: A Set of Prerequisite Toy Tasks`__", *arXiv:1502.05698 [cs.AI]*.
 * Sainbayar Sukhbaatar, Arthur Szlam, Jason Weston, Rob Fergus, "`End-To-End
   Memory Networks`__", *arXiv:1503.08895 [cs.NE]*.
 
