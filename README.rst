@@ -35,11 +35,11 @@ To generate a task, run the command
     babi-tasks <task-id>
 
 where ``<task-id>`` is either a class name (like ``PathFinding``) or the task
-number (e.g. 19). To quickly generate 1000 examples of each task, you can use
+number (e.g. 19). To quickly generate 200 "stories" of each task (*NOTE: this is not equivalent to having 200 questions, there can be multiple questions per story, the original bAbI task specifically uses 1000 questions as training*) you can use
 
 .. code:: bash
 
-    for i in `seq 1 20`; do babi-tasks $i 1000 > task_$i.txt; done
+    for i in `seq 1 20`; do babi-tasks $i 200 > task_$i.txt; done
 
 Tasks
 -----
