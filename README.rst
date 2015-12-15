@@ -35,7 +35,7 @@ To generate a task, run the command
     babi-tasks <task-id>
 
 where ``<task-id>`` is either a class name (like ``PathFinding``) or the task
-number (e.g. 19). To quickly generate 200 "stories" of each task (*NOTE: this is not equivalent to having 200 questions, there can be multiple questions per story, the original bAbI task specifically uses 1000 questions as training*) you can use
+number (e.g. 19). One can quickly generate 200 "stories" of each task with the following (*NOTE: this is not equivalent to having 200 questions per task as there can be multiple questions per story, the original bAbI task data at http://fb.ai/babi specifically uses 1000 questions as training*):
 
 .. code:: bash
 
@@ -130,7 +130,7 @@ What follows is a brief overview of the classes and concepts used, which should
 help guide the understanding of the code.
 
 World
-~~~~~
+~~~~~20
 
 A world is a collection of entities. Worlds can be loaded from text files such
 as those found in ``babi/tasks/worlds`` using the ``world:load(filename)``
