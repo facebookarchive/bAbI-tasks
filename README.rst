@@ -130,7 +130,7 @@ What follows is a brief overview of the classes and concepts used, which should
 help guide the understanding of the code.
 
 World
-~~~~~20
+~~~~~
 
 A world is a collection of entities. Worlds can be loaded from text files such
 as those found in ``babi/tasks/worlds`` using the ``world:load(filename)``
