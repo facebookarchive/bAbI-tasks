@@ -20,7 +20,14 @@ function Task:generate(config)
     local world = self:new_world(config)
     local story, knowledge = self:generate_story(world, Knowledge(world),
                                                  List(), config)
-    return stringify(story, knowledge, config)
+    -- Count number of questions
+    local num_questions = 0
+    for i = 1, #story do
+      if class.istype(story[i], 'Question') then
+        num_questions = num_questions + 1
+      end
+    end
+    return stringify(story, knowledge, config), num_questions
 end
 
 return Task
