@@ -35,11 +35,12 @@ To generate a task, run the command
     babi-tasks <task-id>
 
 where ``<task-id>`` is either a class name (like ``PathFinding``) or the task
-number (e.g. 19). One can quickly generate 200 "stories" of each task with the following (*NOTE: this is not equivalent to having 200 questions per task as there can be multiple questions per story, the original bAbI task data at http://fb.ai/babi specifically uses 1000 questions as training*):
+number (e.g. 19). One can quickly generate stories with a total of 1000
+questions for each task using the following command:
 
 .. code:: bash
 
-    for i in `seq 1 20`; do babi-tasks $i 200 > task_$i.txt; done
+    for i in `seq 1 20`; do babi-tasks $i 1000 > task_$i.txt; done
 
 Tasks
 -----
