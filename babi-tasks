@@ -18,8 +18,14 @@ local function generate(task_name, number, output, user_config)
     config = tablex.merge(config, user_config, true)
 
     math.randomseed(os.time())
-    for i = 1, number do
-        output:write(task:generate(config) .. '\n')
+    local requested = number
+    while number > 0 do
+        story, num_questions = task:generate(config)
+        output:write(story .. '\n')
+        number = number - num_questions
+    end
+    if number < 0 then
+        print(("WARNING: %s questions generated"):format(requested - number))
     end
 end
 
