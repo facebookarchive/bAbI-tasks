@@ -5,15 +5,13 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
 local List = require 'pl.List'
 local Set = require 'pl.Set'
 local tablex = require 'pl.tablex'
 
 local torch = require 'torch'
-local class = require 'class'
 
-local utilities= {}
+local utilities = {}
 local DIRECTIONS = {'n', 's', 'e', 'w'}
 
 function utilities.split(s)
@@ -71,8 +69,7 @@ function utilities.choice(a, size, replace)
     end
 end
 
-local Grid = class('utilities.Grid')
-utilities.Grid = Grid
+local Grid = torch.class('utilities.Grid', utilities)
 
 function Grid:__init(width, height)
     self.width = width

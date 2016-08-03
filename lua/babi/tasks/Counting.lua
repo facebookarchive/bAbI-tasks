@@ -5,30 +5,26 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-local class = require 'class'
-
 local Set = require 'pl.Set'
 local List = require 'pl.List'
 local tablex = require 'pl.tablex'
 
+local babi = require 'babi'
 local actions = require 'babi.actions'
-local Task = require 'babi.Task'
-local World = require 'babi.World'
-local Question = require 'babi.Question'
-local Clause = require 'babi.Clause'
 
-local Counting = class('Counting', 'Task')
+local Counting = torch.class('babi.Counting', 'babi.Task', babi)
 
 function Counting:new_world()
-    local world = World()
+    local world = babi.World()
     world:load((BABI_HOME or '') .. 'tasks/worlds/world_basic.txt')
     return world
 end
 
 function Counting:generate_story(world, knowledge, story)
     -- Our story will be 2 statements, 1 question, 5 times
-    local allowed_actions = {actions.get, actions.give, actions.teleport, actions.drop}
+    local allowed_actions = {
+        actions.get, actions.give, actions.teleport, actions.drop
+    }
     local actors = world:get_actors()
     local known_actors = Set()
     local support = {}
@@ -43,13 +39,13 @@ function Counting:generate_story(world, knowledge, story)
         while not clause do
             local random_action =
                 allowed_actions[math.random(#allowed_actions)]
-            if class.istype(random_action, 'Teleport') then
-                clause = Clause.sample_valid(
+            if torch.isTypeOf(random_action, 'babi.Teleport') then
+                clause = babi.Clause.sample_valid(
                     world, {true}, world:get_actors(),
                     {actions.teleport}, world:get_locations()
                 )
-            elseif class.istype(random_action, 'Get') then
-                clause = Clause.sample_valid(
+            elseif torch.isTypeOf(random_action, 'babi.Get') then
+                clause = babi.Clause.sample_valid(
                     world, {true}, world:get_actors(),
                     {actions.get, actions.drop}, world:get_objects()
                 )
@@ -58,7 +54,7 @@ function Counting:generate_story(world, knowledge, story)
                     support[clause.actor]:append(clause)
                 end
             else
-                clause = Clause.sample_valid(
+                clause = babi.Clause.sample_valid(
                     world, {true}, world:get_actors(),
                     {actions.give}, world:get_objects(), world:get_actors()
                 )
@@ -76,7 +72,8 @@ function Counting:generate_story(world, knowledge, story)
                 (first_question and (i - first_question) % 2 == 0) then
             first_question = first_question or i
             -- Pick a random actor and ask how many objects he/she is carrying
-            local random_actor = tablex.keys(known_actors)[math.random(Set.len(known_actors))]
+            local random_actor =
+                tablex.keys(known_actors)[math.random(Set.len(known_actors))]
             local held_objects = List()
             for _, entity in pairs(world:get_objects()) do
                 local value = knowledge:current()[entity]:get_value('is_in')
@@ -84,9 +81,9 @@ function Counting:generate_story(world, knowledge, story)
                     held_objects:append(entity)
                 end
             end
-            story:append(Question(
+            story:append(babi.Question(
                 'count',
-                Clause(world, true, world:god(), actions.set, random_actor,
+                babi.Clause(world, true, world:god(), actions.set, random_actor,
                        'holding', held_objects),
                 Set(support[random_actor])
             ))

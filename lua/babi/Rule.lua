@@ -5,10 +5,9 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
+local babi = require 'babi._env'
 
-local class = require 'class'
-
-local Rule = class('Rule')
+local Rule = torch.class('babi.Rule', babi)
 
 function Rule:perform(world)
     return

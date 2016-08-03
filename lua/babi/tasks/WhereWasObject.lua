@@ -5,21 +5,15 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-local class = require 'class'
-
 local List = require 'pl.List'
 
+local babi = require 'babi'
 local actions = require 'babi.actions'
-local Task = require 'babi.Task'
-local World = require 'babi.World'
-local Question = require 'babi.Question'
-local Clause = require 'babi.Clause'
 
-local WhereWasObject = class('WhereWasObject', 'Task')
+local WhereWasObject = torch.class('babi.WhereWasObject', 'babi.Task', babi)
 
 function WhereWasObject:new_world()
-    local world = World()
+    local world = babi.World()
     world:load((BABI_HOME or '') .. 'tasks/worlds/world_basic.txt')
     return world
 end
@@ -34,14 +28,15 @@ function WhereWasObject:generate_story(world, knowledge, story)
         while not clause do
             local random_action =
                 allowed_actions[math.random(#allowed_actions)]
-            if class.istype(random_action, 'Teleport') then
-                clause = Clause.sample_valid(world, {true}, world:get_actors(),
-                                             {actions.teleport},
-                                             world:get_locations())
+            if torch.isTypeOf(random_action, 'babi.Teleport') then
+                clause = babi.Clause.sample_valid(
+                    world, {true}, world:get_actors(),
+                    {actions.teleport}, world:get_locations()
+                )
             else
-                clause = Clause.sample_valid(world, {true}, world:get_actors(),
-                                             {actions.get, actions.drop},
-                                             world:get_objects())
+                clause = babi.Clause.sample_valid(
+                    world, {true}, world:get_actors(),
+                    {actions.get, actions.drop}, world:get_objects())
             end
         end
         story_length = story_length + 1
@@ -64,15 +59,22 @@ function WhereWasObject:generate_story(world, knowledge, story)
                 local value_history, support_history =
                     knowledge:get_value_history(random_object, 'is_in', true)
                 -- TODO Ask about history, but needs to be unambiguous
-                story:append(Question(
+                story:append(babi.Question(
                     'before',
                     List{
-                        Clause(world, true, world:god(), actions.set,
-                               random_object, 'is_in', value_history[#value_history - 1]),
-                        Clause(world, true, world:god(), actions.set,
-                               random_object, 'is_in', value_history[#value_history]),
+                        babi.Clause(
+                            world, true, world:god(), actions.set,
+                            random_object, 'is_in',
+                            value_history[#value_history - 1]
+                        ),
+                        babi.Clause(
+                            world, true, world:god(), actions.set,
+                            random_object, 'is_in',
+                            value_history[#value_history]
+                        ),
                     },
-                    support_history[#support_history] + support_history[#support_history - 1]
+                    support_history[#support_history]
+                    + support_history[#support_history - 1]
                 ))
 
                 story_length = 0

@@ -5,26 +5,20 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-local class = require 'class'
-
-local tablex = require 'pl.tablex'
 local Set = require 'pl.Set'
 
+local babi = require 'babi'
 local actions = require 'babi.actions'
-local Task = require 'babi.Task'
-local World = require 'babi.World'
-local Question = require 'babi.Question'
-local Clause = require 'babi.Clause'
 
-local Motivations = class('Motivations', 'Task')
+local Motivations = torch.class('babi.Motivations', 'babi.Task', babi)
 
 function Motivations:new_world()
-    local world = World()
+    local world = babi.World()
     world:load((BABI_HOME or '') .. 'tasks/worlds/world_motivations.txt')
     -- Randomly assign motivations to people
     local actors = world:get_actors()
-    local motivations = world:get(function(entity) return entity.is_motivation end)
+    local motivations =
+        world:get(function(entity) return entity.is_motivation end)
     local assignments = torch.randperm(#actors):totable()
     for i = 1, #actors do
         actors[i].mental_state = motivations[assignments[i]]
@@ -58,15 +52,14 @@ function Motivations:generate_story(world, knowledge, story)
 
         -- Make it do the correct action
         if counter[j] == 1 then
-            story:append(Clause(world, true, world:god(), actions.set,
-                                actors[j], 'is',
-                                actors[j].mental_state))
+            story:append(babi.Clause(world, true, world:god(), actions.set,
+                actors[j], 'is', actors[j].mental_state))
         elseif counter[j] == 3 then
-            story:append(Clause(world, true, actors[j], actions.teleport,
-                                actors[j].mental_state.destination))
+            story:append(babi.Clause(world, true, actors[j], actions.teleport,
+                actors[j].mental_state.destination))
         elseif counter[j] == 5 then
-            story:append(Clause(world, true, actors[j], actions.get,
-                                actors[j].mental_state.object))
+            story:append(babi.Clause(world, true, actors[j], actions.get,
+                actors[j].mental_state.object))
         end
         mapping[j][counter[j]] = #story
 
@@ -77,7 +70,7 @@ function Motivations:generate_story(world, knowledge, story)
         counter[j] = counter[j] + 1
 
         -- Ask the question
-        story:append(Question(
+        story:append(babi.Question(
             counter[j] > 2 and 'why' or 'whereto',
             {story[mapping[j][counter[j] -1]], actors[j].mental_state},
             Set{story[mapping[j][1]]}

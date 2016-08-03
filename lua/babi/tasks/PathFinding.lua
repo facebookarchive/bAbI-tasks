@@ -5,25 +5,19 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-local class = require 'class'
-
 local List = require 'pl.List'
 local Set = require 'pl.Set'
 
+local babi = require 'babi'
 local actions = require 'babi.actions'
-local Task = require 'babi.Task'
-local World = require 'babi.World'
-local Question = require 'babi.Question'
-local Clause = require 'babi.Clause'
 local utilities = require 'babi.utilities'
 
 local DIRECTIONS = {'n', 's', 'e', 'w'}
 
-local PathFinding = class('PathFinding', 'Task')
+local PathFinding = torch.class('babi.PathFinding', 'babi.Task', babi)
 
 function PathFinding:new_world()
-    local world = World()
+    local world = babi.World()
     local locations = List()
     for i, option in ipairs{'bedroom', 'bathroom', 'kitchen',
                             'office', 'garden', 'hallway'} do
@@ -35,14 +29,13 @@ function PathFinding:new_world()
 end
 
 local function add_loc(grid, i, obj, world)
-    world:perform_action('set_pos', world:god(), obj,
-                         grid:to_coordinates(i))
+    world:perform_action('set_pos', world:god(), obj, grid:to_coordinates(i))
     -- Set all the direction properties
     for _, dir in pairs(DIRECTIONS) do
         local j = grid:rel_node(i, dir)
         if grid.nodes[j] then
             world:perform_action('set_dir', world:god(), obj, dir,
-                                 grid.nodes[j])
+                grid.nodes[j])
         end
     end
 end
@@ -75,8 +68,8 @@ function PathFinding:generate_story(world, knowledge, story, config)
             else
                 path:append(dir)
                 add_loc(grid, next_node, self.locations[i], world)
-                story:append(Clause(world, true, world:god(), actions.set,
-                             self.locations[i - 1], dir, self.locations[i]))
+                story:append(babi.Clause(world, true, world:god(), actions.set,
+                    self.locations[i - 1], dir, self.locations[i]))
                 if i - 1 == path_length then
                     target = next_node
                     target_loc = self.locations[i]
@@ -102,7 +95,7 @@ function PathFinding:generate_story(world, knowledge, story, config)
                 grid:remove_node(decoy_node)
             else
                 add_loc(grid, decoy_node, self.locations[i + 1], world)
-                story:append(Clause(world, true, world:god(), actions.set,
+                story:append(babi.Clause(world, true, world:god(), actions.set,
                                     rel_obj, dir, self.locations[i + 1]))
                 i = i + 1
                 j = j + 1
@@ -111,9 +104,9 @@ function PathFinding:generate_story(world, knowledge, story, config)
     end
     local support = Set(story:slice(1, path_length))
     story = utilities.choice(story, #story)
-    story:append(Question(
+    story:append(babi.Question(
         'eval',
-        Clause(world, true, world:god(), actions.set, source_loc,
+        babi.Clause(world, true, world:god(), actions.set, source_loc,
                'path', {target_loc, path}),
         support
     ))

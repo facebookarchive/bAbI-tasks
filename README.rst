@@ -1,9 +1,9 @@
 bAbI tasks
 ==========
 
-This repository contains code to generate the `bAbI tasks` as described in the paper
-`Towards AI-Complete Question Answering: A Set of Prerequisite Toy Tasks`.
-Please cite the paper if you use this code in your work.
+This repository contains code to generate the `bAbI tasks`__ as described in the paper
+`Towards AI-Complete Question Answering: A Set of Prerequisite Toy Tasks`__.
+Please cite the paper if you use this code in your work (bibtex entry `here`__).
 
 __ http://fb.ai/babi
 __ http://arxiv.org/abs/1502.05698
@@ -35,11 +35,11 @@ To generate a task, run the command
     babi-tasks <task-id>
 
 where ``<task-id>`` is either a class name (like ``PathFinding``) or the task
-number (e.g. 19). One can quickly generate 200 "stories" of each task with the following (*NOTE: this is not equivalent to having 200 questions per task as there can be multiple questions per story, the original bAbI task data at http://fb.ai/babi specifically uses 1000 questions as training*):
+number (e.g. 19). To quickly generate 1000 examples of each task, you can use
 
 .. code:: bash
 
-    for i in `seq 1 20`; do babi-tasks $i 200 > task_$i.txt; done
+    for i in `seq 1 20`; do babi-tasks $i 1000 > task_$i.txt; done
 
 Tasks
 -----
@@ -226,7 +226,9 @@ well). This enables turning on things like coreferences, conjunctions, etc.
 References
 ----------
 
-* Jason Weston, Antoine Bordes, Sumit Chopra, Alexander M. Rush, Bart van Merriënboer, Armand Joulin, Tomas Mikolov. "`Towards AI-Complete Question Answering: A Set of Prerequisite Toy Tasks`__", *arXiv:1502.05698 [cs.AI]*.
+* Jason Weston, Antoine Bordes, Sumit Chopra, Tomas Mikolov, Alexander M. 
+  Rush, Bart van Merriënboer, "`Towards AI-Complete Question Answering: A Set of Prerequisite Toy
+  Tasks`__", *arXiv:1502.05698 [cs.AI]*.
 * Sainbayar Sukhbaatar, Arthur Szlam, Jason Weston, Rob Fergus, "`End-To-End
   Memory Networks`__", *arXiv:1503.08895 [cs.NE]*.
 

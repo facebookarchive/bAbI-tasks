@@ -5,25 +5,18 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-
-local class = require 'class'
-
 local tablex = require 'pl.tablex'
 local List = require 'pl.List'
 local Set = require 'pl.Set'
 
+local babi = require 'babi'
 local actions = require 'babi.actions'
-local Task = require 'babi.Task'
-local World = require 'babi.World'
-local Question = require 'babi.Question'
-local Clause = require 'babi.Clause'
 local utilities = require 'babi.utilities'
 
-local Deduction = class('Deduction', 'Task')
+local Deduction = torch.class('babi.Deduction', 'babi.Task', babi)
 
 function Deduction:new_world()
-    local world = World()
+    local world = babi.World()
     for _, animal in pairs{'swan', 'lion', 'frog', 'rhino'} do
         world:create_entity(animal, {is_animal=true})
     end
@@ -52,7 +45,9 @@ function Deduction:generate_story(world, knowledge, story)
     -- Make sure that induction can be performed
     local question = math.random(#actors)
     while true do
-        if List(tablex.values(actor_animals)):count(actor_animals[question]) > 1 then
+        if List(
+            tablex.values(actor_animals)):count(actor_animals[question]
+        ) > 1 then
             break
         else
             actor_animals[question] = math.random(#animals)
@@ -60,13 +55,12 @@ function Deduction:generate_story(world, knowledge, story)
     end
 
     for i = 1, #actors do
-        story[i] = Clause(world, true, world:god(), actions.set,
-                          actors[i], 'has_color',
-                          colors[animal_colors[actor_animals[i]]])
+        story[i] = babi.Clause(world, true, world:god(), actions.set,
+            actors[i], 'has_color', colors[animal_colors[actor_animals[i]]])
     end
     for i = 1, #actors do
-        story[i + #actors] = Clause(world, true, world:god(), actions.set,
-                                    actors[i], 'is', animals[actor_animals[i]])
+        story[i + #actors] = babi.Clause(world, true, world:god(), actions.set,
+            actors[i], 'is', animals[actor_animals[i]])
     end
     local support = Set()
     for i = 1, #actors do
@@ -76,12 +70,12 @@ function Deduction:generate_story(world, knowledge, story)
             support = support + Set{story[#actors + i]}
         end
     end
-    story[question] = Question(
+    story[question] = babi.Question(
         'eval', story[question], support
     )
     story[#story], story[question] = story[question], story[#story]
-    local shuffled_story = utilities.choice(story:slice(1, #story - 1),
-                                            #story - 1)
+    local shuffled_story =
+        utilities.choice(story:slice(1, #story - 1), #story - 1)
     shuffled_story:append(story[#story])
 
     return shuffled_story, knowledge

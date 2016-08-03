@@ -5,21 +5,15 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-local class = require 'class'
-
 local tablex = require 'pl.tablex'
 
+local babi = require 'babi'
 local actions = require 'babi.actions'
-local Task = require 'babi.Task'
-local World = require 'babi.World'
-local Question = require 'babi.Question'
-local Clause = require 'babi.Clause'
 
-local IsActorThere = class('IsActorThere', 'Task')
+local IsActorThere = torch.class('babi.IsActorThere', 'babi.Task', babi)
 
 function IsActorThere:new_world()
-    local world = World()
+    local world = babi.World()
     world:load((BABI_HOME or '') .. 'tasks/worlds/world_basic.txt')
     return world
 end
@@ -34,8 +28,8 @@ function IsActorThere:generate_story(world, knowledge, story)
     for i = 1, 15 do
         if i % 3 ~= 0 then
             -- Find a random action
-            local clause = Clause.sample_valid(world, {true}, actors,
-                                               {actions.teleport}, locations)
+            local clause = babi.Clause.sample_valid(world, {true}, actors,
+                {actions.teleport}, locations)
             clause:perform()
             story[i] = clause
             knowledge:update(clause)
@@ -56,9 +50,9 @@ function IsActorThere:generate_story(world, knowledge, story)
                     world:get_locations():clone():remove_value(location)
                 location = options[math.random(#options)]
             end
-            story[i] = Question(
+            story[i] = babi.Question(
                 'yes_no',
-                Clause(world, affirmative, world:god(), actions.set,
+                babi.Clause(world, affirmative, world:god(), actions.set,
                        random_actor, 'is_in', location),
                 support
             )

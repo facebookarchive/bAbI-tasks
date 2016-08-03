@@ -5,9 +5,9 @@
 # example, not each *question*.
 
 # Task 4
-# Overlap: 112 overlapping unique stories (12.0% of test set)
+# Overlap: 112 overlapping unique examples (12.0% of test set)
 #
-#            # Stories   # Unique stories
+#            # Examples   # Unique examples
 #   Train:   1000         934 (6.6% duplicates)
 #    Test:   1000         933 (6.7% duplicates)
 
@@ -39,9 +39,9 @@ done
 num_overlap=$(comm -12 <(echo "${unique[0]}") <(echo "${unique[1]}") | wc -l)
 
 # Print statistics
-template="Overlap: %u overlapping unique stories (%.1f%% of test set)
+template="Overlap: %u overlapping unique examples (%.1f%% of test set)
 
-           # Stories   # Unique stories"
+           # Examples   # Unique examples"
 
 overlap_pct=$(bc -l <<< "$num_overlap/${num_unique_examples[1]}*100")
 arguments="$num_overlap $overlap_pct"

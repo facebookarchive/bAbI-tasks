@@ -5,26 +5,19 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-
-local class = require 'class'
-
-local tablex = require 'pl.tablex'
 local List = require 'pl.List'
 local Set = require 'pl.Set'
 
+local babi = require 'babi'
 local actions = require 'babi.actions'
-local Task = require 'babi.Task'
-local World = require 'babi.World'
-local Question = require 'babi.Question'
-local Clause = require 'babi.Clause'
 local utilities = require 'babi.utilities'
 
-local PositionalReasoning = class('PositionalReasoning', 'Task')
+local PositionalReasoning =
+    torch.class('babi.PositionalReasoning', 'babi.Task', babi)
 local DIRECTIONS = {{'e', 'w'}, {'n', 's'}}
 
 function PositionalReasoning:new_world()
-    local world = World()
+    local world = babi.World()
     for _, shape in pairs{'square', 'rectangle', 'triangle', 'sphere'} do
         for _, color in pairs{'red', 'blue', 'pink', 'yellow'} do
             world:create_entity(color .. ' ' .. shape, {shape=shape,
@@ -73,8 +66,9 @@ function PositionalReasoning:generate_story(world, knowledge, story)
             grid:add_node(next_node, chosen_shapes[i])
             utilities.add_loc(grid, next_node, chosen_shapes[i], world)
             if i > 1 then
-                story:append(Clause(world, true, world:god(), actions.set,
-                                    chosen_shapes[i - 1], dir, chosen_shapes[i]))
+                story:append(babi.Clause(world, true, world:god(), actions.set,
+                                    chosen_shapes[i - 1], dir,
+                                    chosen_shapes[i]))
             end
             prev_node = next_node
         end
@@ -94,11 +88,13 @@ function PositionalReasoning:generate_story(world, knowledge, story)
         local q_dir = math.random(2 - (diff[1] ~= 0 and 1 or 0),
                                   1 + (diff[2] ~= 0 and 1 or 0))
         local q_truth = ({true, false})[math.random(2)]
-        local q_dir_name = DIRECTIONS[q_dir][(q_truth and 1 or -1) * diff[q_dir] > 0 and 1 or 2]
+        local q_dir_name = DIRECTIONS[q_dir][(q_truth and 1 or -1) *
+                                             diff[q_dir] > 0 and 1 or 2]
 
-        story:append(Question(
+        story:append(babi.Question(
             'yes_no',
-            Clause(world, q_truth, world:god(), actions.set, q1, q_dir_name, q2),
+            babi.Clause(world, q_truth, world:god(),
+                   actions.set, q1, q_dir_name, q2),
             Set{story[1], story[2]}
         ))
     end

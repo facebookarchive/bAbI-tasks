@@ -5,18 +5,14 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-local class = require 'class'
-
 local List = require 'pl.List'
 local tablex = require 'pl.tablex'
 
+local babi = require 'babi._env'
 local actions = require 'babi.actions'
-local Clause = require 'babi.Clause'
-local Entity = require 'babi.Entity'
 local utilities = require 'babi.utilities'
 
-local World = class('World')
+local World = torch.class('babi.World', babi)
 
 function World:__init(entities, world_actions)
     self.entities = entities or {}
@@ -32,7 +28,7 @@ end
 
 -- Load world from text file
 function World:load(fname)
-    local f = io.open(fname)
+    local f = assert(io.open(fname))
     while true do
         local line = f:read('*l')
         if not line then break end
@@ -58,7 +54,7 @@ function World:perform_command(command)
 end
 
 function World:perform_action(action, actor, ...)
-    local clause = Clause(self, true, actor, actions[action], ...)
+    local clause = babi.Clause(self, true, actor, actions[action], ...)
     clause:perform()
 end
 
@@ -68,7 +64,7 @@ function World:create_entity(id, properties, name)
     if self.entities[id] then
         error('id already exists', 2)
     end
-    self.entities[id] = Entity(name, properties)
+    self.entities[id] = babi.Entity(name, properties)
     return self.entities[id]
 end
 
@@ -92,7 +88,6 @@ function World:get_locations()
         function(entity) return entity.is_location end
     ))
 end
-
 
 function World:get_objects()
     return List(tablex.filter(
