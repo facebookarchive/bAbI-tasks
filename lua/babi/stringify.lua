@@ -774,15 +774,18 @@ do
         local location, dir, target = unpack(self:clause().args.args)
         local full_directions = FULL_DIRECTIONS[self.config.directions]
         local tmpl1 = 'what is %s of the %s?\t%s'
-        tmpl1 = tmpl1:format(full_directions[dir],
-                             target.name, location.name)
-
+        local tmpl1a = tmpl1:format(full_directions[dir],
+                                    target.name, location.name)
+        local tmpl1b= tmpl1:format(full_directions[OPPOSITE_DIRECTIONS[dir]],
+                                   location.name, target.name)
         local tmpl2 = 'what is the %s %s of?\t%s'
-        tmpl2 = tmpl2:format(location.name,
-                             full_directions[OPPOSITE_DIRECTIONS[dir]],
-                             target.name)
-
-        return {tmpl1, tmpl2}
+        local tmpl2a = tmpl2:format(location.name,
+                                    full_directions[dir],
+                                    target.name)
+        local tmpl2b = tmpl2:format(target.name,
+                                    full_directions[OPPOSITE_DIRECTIONS[dir]],
+                                    location.name)
+        return {tmpl1a, tmpl1b, tmpl2a, tmpl2b}
     end
 
     function EvalDir:render_symbolic()
@@ -850,10 +853,10 @@ do
         local loc1, dir, loc2 = unpack(self:clause().args)
         local full_directions = FULL_DIRECTIONS[self.config.directions]
         local tmpl = 'the %s is %s of the %s'
-        return {tmpl:format(loc2.name, full_directions[dir], loc1.name),
-                tmpl:format(loc1.name,
+        return {tmpl:format(loc1.name, full_directions[dir], loc2.name),
+                tmpl:format(loc2.name,
                             full_directions[OPPOSITE_DIRECTIONS[dir]],
-                            loc2.name)}
+                            loc1.name)}
     end
 end
 
