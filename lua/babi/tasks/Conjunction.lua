@@ -5,22 +5,16 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-local class = require 'class'
-
 local List = require 'pl.List'
 
+local babi = require 'babi'
 local actions = require 'babi.actions'
-local Task = require 'babi.Task'
-local World = require 'babi.World'
-local Question = require 'babi.Question'
-local Clause = require 'babi.Clause'
 local utilities = require 'babi.utilities'
 
-local Conjunction = class('Conjunction', 'Task')
+local Conjunction = torch.class('babi.Conjunction', 'babi.Task', babi)
 
 function Conjunction:new_world()
-    local world = World()
+    local world = babi.World()
     world:load((BABI_HOME or '') .. 'tasks/worlds/world_basic.txt')
     return world
 end
@@ -38,14 +32,14 @@ function Conjunction:generate_story(world, knowledge, story)
         random_actors:extend(utilities.choice(actors, 2))
         local random_locations = utilities.choice(locations, 2)
 
-        clauses:append(Clause(world, true, random_actors[1],
-                              actions.teleport, random_locations[1]))
-        clauses:append(Clause(world, true, random_actors[2],
-                              actions.teleport, random_locations[1]))
-        clauses:append(Clause(world, true, random_actors[3],
-                              actions.teleport, random_locations[2]))
-        clauses:append(Clause(world, true, random_actors[4],
-                              actions.teleport, random_locations[2]))
+        clauses:append(babi.Clause(world, true, random_actors[1],
+            actions.teleport, random_locations[1]))
+        clauses:append(babi.Clause(world, true, random_actors[2],
+            actions.teleport, random_locations[1]))
+        clauses:append(babi.Clause(world, true, random_actors[3],
+            actions.teleport, random_locations[2]))
+        clauses:append(babi.Clause(world, true, random_actors[4],
+            actions.teleport, random_locations[2]))
 
         for _, clause in pairs(clauses) do
             clause:perform()
@@ -57,9 +51,9 @@ function Conjunction:generate_story(world, knowledge, story)
         local random_actor = random_actors[math.random(4)]
         local value, support =
             knowledge:current()[random_actor]:get_value('is_in', true)
-        story:append(Question(
+        story:append(babi.Question(
             'eval',
-            Clause(world, true, world:god(), actions.set,
+            babi.Clause(world, true, world:god(), actions.set,
                    random_actor, 'is_in', value),
             support
         ))

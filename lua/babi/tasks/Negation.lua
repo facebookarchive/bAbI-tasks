@@ -5,22 +5,16 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-local class = require 'class'
-
 local List = require 'pl.List'
 local Set = require 'pl.Set'
 
+local babi = require 'babi'
 local actions = require 'babi.actions'
-local Task = require 'babi.Task'
-local World = require 'babi.World'
-local Question = require 'babi.Question'
-local Clause = require 'babi.Clause'
 
-local Negation = class('Negation', 'Task')
+local Negation = torch.class('babi.Negation', 'babi.Task', babi)
 
 function Negation:new_world()
-    local world = World()
+    local world = babi.World()
     world:load((BABI_HOME or '') .. 'tasks/worlds/world_basic.txt')
     return world
 end
@@ -44,8 +38,8 @@ function Negation:generate_story(world, knowledge, story)
             while not clause do
                 local random_action =
                     allowed_actions[math.random(#allowed_actions)]
-                if class.istype(random_action, 'Teleport') then
-                    clause = Clause.sample_valid(
+                if torch.isTypeOf(random_action, 'babi.Teleport') then
+                    clause = babi.Clause.sample_valid(
                         world, {true}, world:get_actors(),
                         {actions.teleport}, world:get_locations()
                     )
@@ -61,9 +55,8 @@ function Negation:generate_story(world, knowledge, story)
                             locations:clone():remove_value(actor.is_in)
                         location = options[math.random(#options)]
                     end
-                    clause = Clause(world, affirmative, world:god(),
-                                    actions.set, actor, 'is_in',
-                                    location)
+                    clause = babi.Clause(world, affirmative, world:god(),
+                        actions.set, actor, 'is_in', location)
                 end
             end
             if not known_actors:contains(actor) then
@@ -83,10 +76,10 @@ function Negation:generate_story(world, knowledge, story)
                 location = options[math.random(#options)]
                 truth_value = false
             end
-            story:append(Question(
+            story:append(babi.Question(
                 'yes_no',
-                Clause(world, truth_value, world:god(), actions.set,
-                       random_actor, 'is_in', location),
+                babi.Clause(world, truth_value, world:god(), actions.set,
+                    random_actor, 'is_in', location),
                 value.support
             ))
         end

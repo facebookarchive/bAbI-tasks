@@ -5,10 +5,9 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
+local babi = require 'babi._env'
 
-local class = require 'class'
-
-local Entity = class('Entity')
+local Entity = torch.class('babi.Entity', babi)
 
 -- An entity in the world (just a table with some defaults)
 function Entity:__init(name, properties)

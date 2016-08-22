@@ -5,25 +5,15 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
+local babi = require 'babi'
+require 'babi.tasks.Counting'
 
-local class = require 'class'
-
-local Set = require 'pl.Set'
-local List = require 'pl.List'
-
-local actions = require 'babi.actions'
-local Task = require 'babi.Task'
-local World = require 'babi.World'
-local Question = require 'babi.Question'
-local Clause = require 'babi.Clause'
-local Counting = require 'babi.tasks.Counting'
-
-local Listing, parent = class('Listing', 'Counting')
+local Listing, parent = torch.class('babi.Listing', 'babi.Counting', babi)
 
 function Listing:generate_story(...)
     local story, knowledge = parent:generate_story(...)
     for i = 1, #story do
-        if class.istype(story[i], 'Question') then
+        if torch.isTypeOf(story[i], 'babi.Question') then
             story[i].kind = 'eval'
         end
     end

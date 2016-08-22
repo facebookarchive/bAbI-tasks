@@ -5,11 +5,11 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-local class = require 'class'
 local tablex = require 'pl.tablex'
 
-local Clause = class('Clause')
+local babi = require 'babi._env'
+
+local Clause = torch.class('babi.Clause', babi)
 
 function Clause:__init(world, truth_value, actor, action, ...)
     self.world = world
@@ -17,6 +17,13 @@ function Clause:__init(world, truth_value, actor, action, ...)
     self.actor = actor
     self.action = action
     self.args = {...}
+end
+
+function Clause.new(...)
+    local cl = {}
+    setmetatable(cl, {__index = Clause})
+    cl:__init(...)
+    return cl
 end
 
 function Clause:is_valid()
@@ -48,7 +55,7 @@ function Clause.sample_valid(world, truth_values, actors, actions, ...)
         for i, arg in ipairs{...} do
             args[i] = arg[math.random(#arg)]
         end
-        clause = Clause(world, truth_value, actor, action, unpack(args))
+        clause = Clause.new(world, truth_value, actor, action, unpack(args))
         if clause:is_valid() then
             return clause
         end

@@ -5,25 +5,19 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-local class = require 'class'
-
 local List = require 'pl.List'
 local Set = require 'pl.Set'
 
+local babi = require 'babi'
 local actions = require 'babi.actions'
-local Task = require 'babi.Task'
-local World = require 'babi.World'
-local Question = require 'babi.Question'
-local Clause = require 'babi.Clause'
 
 local OPPOSITE_DIRECTIONS = {n='s', ne='sw', e='w', se='nw', s='n',
                              sw='ne', w='e', nw='se', u='d', d='u'}
 
-local IsDir = class('IsDir', 'Task')
+local IsDir = torch.class('babi.IsDir', 'babi.Task', babi)
 
 function IsDir:new_world()
-    local world = World()
+    local world = babi.World()
 
     -- Pick three random locations
     local options = {'bedroom', 'bathroom', 'kitchen',
@@ -55,10 +49,10 @@ end
 
 function IsDir:generate_story(world, knowledge, story)
     -- Inform the reader of the two relations
-    story[1] = Clause(world, true, world:god(), actions.set, self.locations[1],
-                      self.dir, self.locations[2])
-    story[2] = Clause(world, true, world:god(), actions.set, self.locations[2],
-                      self.dir, self.locations[3])
+    story[1] = babi.Clause(world, true, world:god(), actions.set,
+        self.locations[1], self.dir, self.locations[2])
+    story[2] = babi.Clause(world, true, world:god(), actions.set,
+        self.locations[2], self.dir, self.locations[3])
 
     -- Give the information in either order
     local swap = math.random(2)
@@ -75,9 +69,9 @@ function IsDir:generate_story(world, knowledge, story)
     supporting_fact = swap > 1 and supporting_fact % 2 + 1 or supporting_fact
 
     -- Ask the question
-    story[3] = Question(
+    story[3] = babi.Question(
         'eval',
-        Clause(world, true, world:god(), actions.set, self.locations[2],
+        babi.Clause(world, true, world:god(), actions.set, self.locations[2],
                ask_dir, self.locations[ask_location]),
         Set{story[supporting_fact]}
     )

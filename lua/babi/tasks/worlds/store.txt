@@ -24,6 +24,20 @@ create melon
 set melon is_thing
 set melon is_gettable
 
+# boxes and containers
+create box
+set box is_thing
+set box is_container
+set box plural boxes
+
+create crate
+set crate is_thing
+set crate is_container
+
+create basket
+set basket is_thing
+set basket is_container
+
 # actors
 create John
 set John is_actor

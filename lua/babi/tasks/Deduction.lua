@@ -5,24 +5,16 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-
-local class = require 'class'
-
-local tablex = require 'pl.tablex'
 local Set = require 'pl.Set'
 
+local babi = require 'babi'
 local actions = require 'babi.actions'
-local Task = require 'babi.Task'
-local World = require 'babi.World'
-local Question = require 'babi.Question'
-local Clause = require 'babi.Clause'
 local utilities = require 'babi.utilities'
 
-local Deduction = class('Deduction', 'Task')
+local Deduction = torch.class('babi.Deduction', 'babi.Task', babi)
 
 function Deduction:new_world()
-    local world = World()
+    local world = babi.World()
     for _, animal in pairs{{'mouse', 'mice'}, {'sheep', 'sheep'},
                            {'wolf', 'wolves'}, {'cat', 'cats'}} do
         world:create_entity(animal[1], {is_animal=true, plural=animal[2]})
@@ -48,23 +40,26 @@ function Deduction:generate_story(world, knowledge, story)
     end
 
     for i, j in ipairs(assignments) do
-        story[i] = Clause(world, true, world:god(), actions.set, actors[i],
+        story[i] = babi.Clause(world, true, world:god(), actions.set, actors[i],
                          'is', animals[j])
     end
     for i, j in ipairs(afraid_of) do
-        story[i + #actors] = Clause(world, true, world:god(), actions.set,
+        story[i + #actors] = babi.Clause(world, true, world:god(), actions.set,
                                     animals[i], 'has_fear', animals[j])
     end
     for i = 1, #actors do
-        story[i + 2 * #actors] = Question(
+        story[i + 2 * #actors] = babi.Question(
             'eval',
-            Clause(world, true, world:god(), actions.set,
+            babi.Clause(world, true, world:god(), actions.set,
                    actors[i], 'has_fear', animals[afraid_of[assignments[i]]]),
             Set{story[i], story[assignments[i] + #actors]}
         )
     end
-    local shuffled_story = utilities.choice(story:slice(1, 2 * #actors), 2 * #actors)
-    shuffled_story:extend(utilities.choice(story:slice(2 * #actors + 1), #actors))
+    local shuffled_story =
+        utilities.choice(story:slice(1, 2 * #actors), 2 * #actors)
+    shuffled_story:extend(
+        utilities.choice(story:slice(2 * #actors + 1), #actors)
+    )
 
     return shuffled_story, knowledge
 end

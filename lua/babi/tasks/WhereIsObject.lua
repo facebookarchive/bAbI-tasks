@@ -5,21 +5,15 @@
 -- LICENSE file in the root directory of this source tree. An additional grant
 -- of patent rights can be found in the PATENTS file in the same directory.
 
-
-local class = require 'class'
-
 local tablex = require 'pl.tablex'
 
+local babi = require 'babi'
 local actions = require 'babi.actions'
-local Task = require 'babi.Task'
-local World = require 'babi.World'
-local Question = require 'babi.Question'
-local Clause = require 'babi.Clause'
 
-local WhereIsObject = class('WhereIsObject', 'Task')
+local WhereIsObject = torch.class('babi.WhereIsObject', 'babi.Task', babi)
 
 function WhereIsObject:new_world()
-    local world = World()
+    local world = babi.World()
     world:load((BABI_HOME or '') .. 'tasks/worlds/world_basic.txt')
     return world
 end
@@ -34,13 +28,13 @@ function WhereIsObject:generate_story(world, knowledge, story)
         while not clause do
             local random_action =
                 allowed_actions[math.random(#allowed_actions)]
-            if class.istype(random_action, 'Teleport') then
-                clause = Clause.sample_valid(
+            if torch.isTypeOf(random_action, 'babi.Teleport') then
+                clause = babi.Clause.sample_valid(
                     world, {true}, world:get_actors(),
                     {actions.teleport}, world:get_locations()
                 )
             else
-                clause = Clause.sample_valid(
+                clause = babi.Clause.sample_valid(
                     world, {true}, world:get_actors(),
                     {actions.get, actions.drop}, world:get_objects()
                 )
@@ -69,10 +63,10 @@ function WhereIsObject:generate_story(world, knowledge, story)
                 local _, holder_support =
                     knowledge:current()[random_object.is_in]:get_value('is_in',
                                                                        true)
-                story:append(Question(
+                story:append(babi.Question(
                     'eval',
-                    Clause(world, true, world:god(), actions.set,
-                           random_object, 'is_in', value.is_in),
+                    babi.Clause(world, true, world:god(), actions.set,
+                        random_object, 'is_in', value.is_in),
                     support + holder_support
                 ))
 
