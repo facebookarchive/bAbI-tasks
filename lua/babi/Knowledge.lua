@@ -298,7 +298,6 @@ function Knowledge:update(clause)
                 self.knowledge[t][k] = babi.EntityProperties(self)
                 for l, w in pairs(self.knowledge[t - 1][k]) do
                     if l ~= 'knowledge' then
-                        -- require('fb.debugger'):enter()
                         self.knowledge[t][k][l] = self.knowledge[t - 1][k][l]
                     end
                 end

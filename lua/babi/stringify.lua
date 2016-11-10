@@ -1289,7 +1289,8 @@ do
         self:clause().kind == 'before' and
         is_property_clause(self:clause().args[1], 'is_in') and
         is_property_clause(self:clause().args[2], 'is_in') and
-        self:clause().args[1].args[1] == self:clause().args[2].args[1] then
+        self:clause().args[1].args[1] == self:clause().args[2].args[1] and
+        #self:clause().support == 3 then
             return true
         end
     end
@@ -1668,7 +1669,7 @@ local function stringify(story, knowledge, config)
 
         local template
         if #valid_templates == 0 then
-            error('no valid template found')
+            return
         else
             template = utilities.choice(valid_templates)[1]
         end

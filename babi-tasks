@@ -19,7 +19,11 @@ local function generate(task_name, number, output, user_config)
 
     math.randomseed(os.time())
     for i = 1, number do
-        output:write(task:generate(config) .. '\n')
+        local story
+        repeat
+            story = task:generate(config)
+        until story
+        output:write(story .. '\n')
     end
 end
 
