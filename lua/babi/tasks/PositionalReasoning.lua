@@ -14,7 +14,7 @@ local utilities = require 'babi.utilities'
 
 local PositionalReasoning =
     torch.class('babi.PositionalReasoning', 'babi.Task', babi)
-local DIRECTIONS = {{'e', 'w'}, {'n', 's'}}
+local DIRECTIONS = {{'w', 'e'}, {'n', 's'}}
 
 function PositionalReasoning:new_world()
     local world = babi.World()
