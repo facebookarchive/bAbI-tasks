@@ -23,7 +23,7 @@ local FULL_DIRECTIONS = {
     },
     relative={
         n='above', s='below',
-        e='to the left of', w='to the right of'
+        w='to the left of', e='to the right of'
     }
 }
 local NUMERALS = {
@@ -773,12 +773,12 @@ do
     function EvalDir:render()
         local location, dir, target = unpack(self:clause().args.args)
         local full_directions = FULL_DIRECTIONS[self.config.directions]
-        local tmpl1 = 'what is %s of the %s?\t%s'
+        local tmpl1 = 'what is %s the %s?\t%s'
         local tmpl1a = tmpl1:format(full_directions[dir],
                                     target.name, location.name)
         local tmpl1b= tmpl1:format(full_directions[OPPOSITE_DIRECTIONS[dir]],
                                    location.name, target.name)
-        local tmpl2 = 'what is the %s %s of?\t%s'
+        local tmpl2 = 'what is the %s %s?\t%s'
         local tmpl2a = tmpl2:format(location.name,
                                     full_directions[dir],
                                     target.name)
@@ -852,7 +852,7 @@ do
     function Dir:render()
         local loc1, dir, loc2 = unpack(self:clause().args)
         local full_directions = FULL_DIRECTIONS[self.config.directions]
-        local tmpl = 'the %s is %s of the %s'
+        local tmpl = 'the %s is %s the %s'
         return {tmpl:format(loc1.name, full_directions[dir], loc2.name),
                 tmpl:format(loc2.name,
                             full_directions[OPPOSITE_DIRECTIONS[dir]],
@@ -1400,13 +1400,13 @@ do
     function EvalGive:render()
         local actor = self:clause().args.actor
         local object, recipient = unpack(self:clause().args.args)
-        local tmpl1 = ('what did %s give to %s?\t%s'):format(
+        local tmpl1 = ('what did %s give to %s last?\t%s'):format(
             actor.name, recipient.name, object.name
         )
-        local tmpl2 = ('who received the %s?\t%s'):format(
+        local tmpl2 = ('who received the %s last?\t%s'):format(
             object.name, recipient.name
         )
-        local tmpl3 = ('who did %s give the %s to?\t%s'):format(
+        local tmpl3 = ('who did %s give the %s to last?\t%s'):format(
             actor.name, object.name, recipient.name
         )
         return {tmpl1, tmpl2, tmpl3}
